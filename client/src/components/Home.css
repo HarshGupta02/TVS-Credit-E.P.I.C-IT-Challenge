@@ -1,0 +1,50 @@
+.outer-form-div-home{
+    display: flex;
+    flex-direction: row;
+    margin-top: 20px;
+    margin-left: 20px;
+}
+
+.upload-details{
+    display: flex;
+    flex-direction: column;
+    gap: 1px;
+    margin-top: 20px;
+    padding-bottom: 20px;
+}
+
+.inner-css{
+    display: flex;
+    flex-direction: row;
+    gap: 20px;
+}
+
+.evaluate-button{
+    display: flex;
+    flex-direction: row;
+    justify-content:space-between;
+}
+
+#btnUpload1{
+    width: 160px;
+}
+
+#btnUpload2{
+    width: 160px;
+}
+
+#btnUpload3{
+    width: 160px;
+}
+
+#btnUpload4{
+    width: 160px;
+}
+
+#btnUpload5{
+    width: 220px;
+}
+
+#btnUpload6{
+    width: 230px;
+}
