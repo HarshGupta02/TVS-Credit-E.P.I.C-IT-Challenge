@@ -48,3 +48,10 @@
 #btnUpload6{
     width: 230px;
 }
+
+#finalscore{
+    display: flex;
+    flex-direction: column;
+    width: 190px;
+    gap: 20px;
+}

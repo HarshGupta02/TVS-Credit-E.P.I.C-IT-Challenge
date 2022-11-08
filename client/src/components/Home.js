@@ -4,6 +4,11 @@ import "./Home.css";
 const Home = () => {
   const [brand, setBrand] = useState('');
   const [model, setModel] = useState('');
+  const [oldprice, setOldprice] = useState('');
+  const [oldyears, setOldyear] = useState('');
+  const [ownership, setOwnership] = useState('');
+  const [location, setLocation] = useState('');
+  const [kms, setKms] = useState('');
   const [front, setFront] = useState('');
   const [back, setBack] = useState('');
   const [left, setLeft] = useState('');
@@ -84,7 +89,6 @@ const Home = () => {
   const evaluate = async (e) => {
     e.preventDefault();
     const {result} = await fetch('http://localhost:5000/evaluate').then(res => res.json())
-
   }
 
   const uploadAccelarate = async (e) => {
@@ -142,6 +146,25 @@ const Home = () => {
     const {result} = await fetch('http://localhost:5000/evaluateaudio').then(res => res.json())
   }
 
+  const audiofinalscore = async (e) => {
+    e.preventDefault();
+    const res = await fetch("http://localhost:5000/writefinalscore", {
+      method : "post",
+      headers : {
+        "Content-Type" : "application/json"
+      },
+      body : JSON.stringify({
+        brand : brand,
+        model : model,
+        oldprice : oldprice,
+        yearsold : oldyears,
+        ownership : ownership,
+        location : location,
+        kmsdriven : kms
+      })
+    })
+    const {result} = await fetch('http://localhost:5000/finalscore').then(res => res.json())
+  }
 
 
   return (
@@ -157,19 +180,24 @@ const Home = () => {
              autoComplete = "on" placeholder='Model'/>
           </div>
           <div>
-            <input type = "number" name = "oldprice" id = "oldprice" autoComplete = "on" placeholder='Old Price'/>
+            <input type = "number" name = "oldprice" id = "oldprice" onChange={(e) => setOldprice(e.target.value)}  
+            autoComplete = "on" placeholder='Old Price'/>
           </div>
           <div>
-            <input type = "number" name = "yearsold" id = "yearold" autoComplete = "on" placeholder='Years Old'/>
+            <input type = "number" name = "yearsold" id = "yearold" onChange={(e) => setOldyear(e.target.value)} 
+            autoComplete = "on" placeholder='Years Old'/>
           </div>
           <div>
-            <input type = "number" name = "ownership" id = "ownership" autoComplete = "on" placeholder='OwnerShip'/>
+            <input type = "number" name = "ownership" id = "ownership" onChange={(e) => setOwnership(e.target.value)} 
+            autoComplete = "on" placeholder='OwnerShip'/>
           </div>
           <div>
-            <input type = "text" name = "location" id = "location" autoComplete = "on" placeholder='Location'/>
+            <input type = "text" name = "location" id = "location" onChange={(e) => setLocation(e.target.value)} 
+            autoComplete = "on" placeholder='Location'/>
           </div>
           <div>
-            <input type = "number" name = "kmsdriven" id = "kmsderiven" autoComplete = "on" placeholder='Kms Driven'/>
+            <input type = "number" name = "kmsdriven" id = "kmsdriven" onChange={(e) => setKms(e.target.value)} 
+            autoComplete = "on" placeholder='Kms Driven'/>
           </div>
           <form className='upload-details' id = "ImageForm">
             <input type="file" id = "inpFile1" className='inner-css' onChange={(e) => setFront(e.target.value)} accept="image/*"/>
@@ -189,8 +217,11 @@ const Home = () => {
             <input type="file" id = "inpFile6" className='inner-css' onChange={(e) => setDeaccelarate(e.target.value)} accept="audio/*"/>
             <button type = "submit" id = "btnUpload6" onClick={uploadDeaccelarate}>Upload Deaccelarating Audio</button>
           </form>
-          <button type = "submit" id = "btnUpload7" onClick={audioevaluate}>Evaluate Audio</button>
-
+          {/* <button type = "submit" id = "btnUpload7" onClick={audioevaluate}>Evaluate Audio</button> */}
+          <div id = "finalscore">
+            <button type = "submit" id = "btnUpload7" onClick={audioevaluate}>Evaluate Audio</button>
+            <button type = "submit" id = "btnUpload8" onClick={audiofinalscore}>Calculate Final Score</button>
+          </div>
         </form>
       </div>
     </div>

@@ -207,4 +207,4 @@ avgd = (maxt+maxi)/2;
 total_score = (avga+avgb+avgc+avgd)/4;
 
 with open('C:/Users/HarshGupta/Desktop/Images_output/out.txt', 'w') as f:
-    print("Total Similarity Score : ", total_score, file=f)
+    print(total_score, file=f)

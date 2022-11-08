@@ -260,9 +260,9 @@ user_deacc = AudioAnalyzer(file4, input_sr=44100, fft_size=44100)
 orig_to_used_deacc = SpectrumCompare(original_deacc, user_deacc)
 
 duration, fp_encoded3 = acoustid.fingerprint_file(file3)
-fingerprint3, version = acoustid.chromaprint.decode_fingerprint(fp_encoded3)
+fingerprint3, version = chromaprint.decode_fingerprint(fp_encoded3)
 duration, fp_encoded4  = acoustid.fingerprint_file(file4)
-fingerprint4, version = acoustid.chromaprint.decode_fingerprint(fp_encoded4)
+fingerprint4, version = chromaprint.decode_fingerprint(fp_encoded4)
 
 similarity2 = fuzz.ratio(fingerprint3, fingerprint4)
 

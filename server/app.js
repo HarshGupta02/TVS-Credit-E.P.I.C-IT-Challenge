@@ -94,9 +94,45 @@ app.get('/evaluateaudio', async (req, res) => {
     res.send({"message" : "python file executed successfully"});
 })
 
+app.get('/finalscore', (req, res) => {
+    const child = spawner('python', ['C:/Users/HarshGupta/Desktop/Tvs-Credit-It-Challenge/server/final_score.py']);
+
+    child.stdout.on('data', (data) => {
+        console.log(`stdout : ${data}`);
+    });
+
+    child.stderr.on('data', (data) => {
+        console.error(`stderr : ${data}`);
+    });
+
+    child.on('close', (code) => {
+        console.log(`child process exited with code ${code}`);
+    });
+
+    res.send({"message" : "python file executed successfully"});
+})
+
 app.post('/write', (req, res) => {
     const {data} = req.body;
     fs.writeFile('C:/Users/HarshGupta/Desktop/Name.txt', data, err => {
+        if(err){
+          console.log(err);
+          return res.send({"message" : "error occured"});
+        }
+    })
+    res.send({"info" : "present text"});
+})
+
+app.post('/writefinalscore', (req, res) => {
+    console.log("here");
+    const {brand, model, oldprice, yearsold, ownership, location, kmsdriven} = req.body;
+    let x = brand + ',' + model + ',' + oldprice + ',' + yearsold + ',' + ownership + ',' + location + ',' + kmsdriven;
+    var imagescore = fs.readFileSync('C:/Users/HarshGupta/Desktop/Images_output/out.txt', 'utf-8');
+    x = x + ',' + imagescore;
+    // var audioscore = fs.readFileSync('C:/Users/HarshGupta/Desktop/Audio_output/Final_out.txt', 'utf-8');
+    // x = x + ',' + audioscore;
+
+    fs.writeFile('C:/Users/HarshGupta/Desktop/outcomes/detail.txt', x, err => {
         if(err){
           console.log(err);
           return res.send({"message" : "error occured"});
