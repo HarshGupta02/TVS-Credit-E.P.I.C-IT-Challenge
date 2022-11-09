@@ -21,7 +21,29 @@ const Home = () => {
     const ImageInput1 = document.querySelector("#inpFile1")
     const file1 = ImageInput1.files[0]
 
-    const {urlfront} = await fetch('http://localhost:5000/s3front').then(res => res.json());
+    // const {urlfront} = await fetch('http://localhost:5000/s3front').then(res => res.json());
+
+    const {urlfront} = await fetch('http://localhost:5000/s3front', {
+      method : "post",
+      headers : {
+        "Content-Type" : "application/json"
+      },
+      body : JSON.stringify({
+        brand : brand,
+        model : model
+      })
+    }).then(res => res.json());
+
+    // const {urlfront} = await fetch('http://localhost:5000/s3front', {
+    //   method : "post",
+    //   headers : {
+    //     "Content-Type" : "application/json"
+    //   },
+    //   body : JSON.stringify({
+    //     brand : brand,
+    //     model : model
+    //   })
+    // });
 
     console.log(urlfront);
     
@@ -41,7 +63,16 @@ const Home = () => {
     e.preventDefault();
     const ImageInput2 = document.querySelector("#inpFile2");
     const file2 = ImageInput2.files[0];
-    const {urlback} = await fetch('http://localhost:5000/s3back').then(res => res.json())
+    const {urlback} = await fetch('http://localhost:5000/s3back', {
+      method : "post",
+      headers : {
+        "Content-Type" : "application/json"
+      },
+      body : JSON.stringify({
+        brand : brand,
+        model : model
+      })
+    }).then(res => res.json())
     
     await fetch(urlback, {
       method: "PUT",
@@ -58,7 +89,16 @@ const Home = () => {
     e.preventDefault();
     const ImageInput3 = document.querySelector("#inpFile3");
     const file3 = ImageInput3.files[0];
-    const {urlleft} = await fetch('http://localhost:5000/s3left').then(res => res.json())
+    const {urlleft} = await fetch('http://localhost:5000/s3left', {
+      method : "post",
+      headers : {
+        "Content-Type" : "application/json"
+      },
+      body : JSON.stringify({
+        brand : brand,
+        model : model
+      })
+    }).then(res => res.json())
 
     await fetch(urlleft, {
       method: "PUT",
@@ -74,7 +114,18 @@ const Home = () => {
     e.preventDefault();
     const ImageInput4 = document.querySelector("#inpFile4");
     const file4 = ImageInput4.files[0];
-    const {urlright} = await fetch('http://localhost:5000/s3right').then(res => res.json())
+    const {urlright} = await fetch('http://localhost:5000/s3right', {
+      method : "post",
+      headers : {
+        "Content-Type" : "application/json"
+      },
+      body : JSON.stringify({
+        brand : brand,
+        model : model
+      })
+    }).then(res => res.json())
+
+    console.log(urlright);
     
     await fetch(urlright, {
       method: "PUT",
@@ -88,7 +139,16 @@ const Home = () => {
   
   const evaluate = async (e) => {
     e.preventDefault();
-    const {result} = await fetch('http://localhost:5000/evaluate').then(res => res.json())
+    const {result} = await fetch('http://localhost:5000/evaluate', {
+      method : "post",
+      headers : {
+        "Content-Type" : "application/json"
+      },
+      body : JSON.stringify({
+        brand : brand,
+        model : model
+      })
+    }).then(res => res.json())
   }
 
   const uploadAccelarate = async (e) => {
@@ -162,10 +222,15 @@ const Home = () => {
         location : location,
         kmsdriven : kms
       })
-    })
-    const {result} = await fetch('http://localhost:5000/finalscore').then(res => res.json())
-  }
+    });
 
+    const result = await fetch('http://localhost:5000/finalscore');
+    // const y = await result.json();
+    // const data = await fetch('http://localhost:5000/display');
+    // const target = await data.json();
+    // console.log(target['Finalscore']);
+
+  }
 
   return (
     <div>

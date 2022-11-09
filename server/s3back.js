@@ -15,8 +15,9 @@ const s3back = new aws.S3({
     signatureVersion: 'v4'
 })
 
-module.exports = async function generateUploadURLBack(){
-    const imageName = "imageback";
+module.exports = async function generateUploadURLBack(brand, model){
+    // const imageName = "imageback";
+    const imageName = brand + "_" + model + "_" + "rear";
     const params = ({
         Bucket : bucketName,
         Key : imageName,

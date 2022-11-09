@@ -15,8 +15,9 @@ const s3 = new aws.S3({
     signatureVersion: 'v4'
 })
 
-module.exports = async function generateUploadURLFront(){
-    const imageName = "imagefront"
+module.exports = async function generateUploadURLFront(brand, model){
+    // const imageName = "imagefront"
+    const imageName = brand + "_" + model + "_" + "front";
     const params = ({
         Bucket : bucketName,
         Key : imageName,

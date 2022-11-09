@@ -15,8 +15,9 @@ const s3right = new aws.S3({
     signatureVersion: 'v4'
 })
 
-module.exports = async function generateUploadURLRight(){
-    const imageName = "imageright";
+module.exports = async function generateUploadURLRight(brand, model){
+    // const imageName = "imageright";
+    const imageName = brand + "_" + model + "_" + "right";
     const params = ({
         Bucket : bucketName,
         Key : imageName,

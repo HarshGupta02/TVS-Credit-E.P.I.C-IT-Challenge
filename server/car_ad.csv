@@ -1,0 +1,16 @@
+Vehicles,Model,Old_Price,Years_old,Prev_Owners,Location,Kms_Driven,Image_Score,Audio_Score,Final_Price
+
+Honda,Apache,32000,3,3,Delhi,12000,1.0,0.5,24220.0
+Honda,CB_350,30000,9,2,Gujrat,12000,1.0,0.5,20220.0
+Honda,CB_350,30000,9,2,Gujrat,12000,1.0,0.5,20220.0
+Tvs,CB_350,30000,9,2,Gujrat,12000,1.0,0.5,20220.0
+Tvs,Apache,245432,5,6,Delhi,98723,1.0,0.5,232483.08
+Honda,Apache,32000,3,3,Delhi,12000,1.0,0.5,24220.0
+Honda,CB_350,30000,9,2,Gujrat,12000,1.0,0.5,20220.0
+Tvs,CB_350,30000,9,2,Gujrat,12000,1.0,0.5,20220.0
+Honda,CB_350,30000,9,2,Gujrat,12000,1.0,0.5,20220.0
+Tvs,Apache,245432,5,6,Delhi,98723,1.0,0.5,232483.08
+
+Honda,Apache,245432,5,6,Delhi,98723,1.0,0.5,232483.08
+Honda,Apache,245432,5,6,Delhi,98723,1.0,0.5,232483.08
+Honda,CB_350,675342,2,5,Gujrat,3525,1.0,0.5,666532.0

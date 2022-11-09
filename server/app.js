@@ -28,23 +28,32 @@ const generateUploadURLRight = require("./s3right");
 const generateUploadURLAccelarate = require("./s3accelarate");
 const generateUploadURLDeaccelarate = require("./s3deaccelarate");
 
-app.get('/s3front', async (req, res) => {
-    const urlfront = await generateUploadURLFront()
+// app.get('/s3front', async (req, res) => {
+//     const urlfront = await generateUploadURLFront()
+//     res.send({urlfront});
+// })
+
+app.post('/s3front', async (req, res) => {
+    const {brand, model} = req.body;
+    const urlfront = await generateUploadURLFront(brand, model)
     res.send({urlfront});
 })
 
-app.get('/s3back', async (req, res) => {
-    const urlback = await generateUploadURLBack()
+app.post('/s3back', async (req, res) => {
+    const {brand, model} = req.body;
+    const urlback = await generateUploadURLBack(brand, model)
     res.send({urlback})
 })
 
-app.get('/s3left', async (req, res) => {
-    const urlleft = await generateUploadURLLeft()
+app.post('/s3left', async (req, res) => {
+    const {brand, model} = req.body;
+    const urlleft = await generateUploadURLLeft(brand, model)
     res.send({urlleft})
 })
 
-app.get('/s3right', async (req, res) => {
-    const urlright = await generateUploadURLRight()
+app.post('/s3right', async (req, res) => {
+    const {brand, model} = req.body;
+    const urlright = await generateUploadURLRight(brand, model)
     res.send({urlright})
 })
 
@@ -58,8 +67,12 @@ app.get('/s3deaccelarate', async (req, res) => {
     res.send({urldeaccelarate})
 })
 
-app.get('/evaluate', async (req, res) => {
-    const child = spawner('python', ['C:/Users/HarshGupta/Desktop/Tvs-Credit-It-Challenge/server/final.py']);
+// app.get('/evaluate', async (req, res) => {
+
+app.post('/evaluate', async (req, res) => {
+    const {brand, model} = req.body;
+    // const child = spawner('python', ['C:/Users/HarshGupta/Desktop/Tvs-Credit-It-Challenge/server/final.py', brand, model]);
+    const child = spawner('python', ['C:/Users/HarshGupta/Desktop/Tvs-Credit-It-Challenge/server/final_1.py', brand, model]);
 
     child.stdout.on('data', (data) => {
         console.log(`stdout : ${data}`);
@@ -95,8 +108,9 @@ app.get('/evaluateaudio', async (req, res) => {
 })
 
 app.get('/finalscore', (req, res) => {
-    const child = spawner('python', ['C:/Users/HarshGupta/Desktop/Tvs-Credit-It-Challenge/server/final_score.py']);
 
+    const child = spawner('python', ['C:/Users/HarshGupta/Desktop/Tvs-Credit-It-Challenge/server/final_score.py']);
+    
     child.stdout.on('data', (data) => {
         console.log(`stdout : ${data}`);
     });
@@ -108,8 +122,7 @@ app.get('/finalscore', (req, res) => {
     child.on('close', (code) => {
         console.log(`child process exited with code ${code}`);
     });
-
-    res.send({"message" : "python file executed successfully"});
+    res.json({"message" : "run successfully"});
 })
 
 app.post('/write', (req, res) => {
@@ -138,9 +151,16 @@ app.post('/writefinalscore', (req, res) => {
           return res.send({"message" : "error occured"});
         }
     })
-    res.send({"info" : "present text"});
+
+    return res.send({"info" : "present text"});
 })
 
+app.get('/display', (req, res) => {
+    fs.readFile('C:/Users/HarshGupta/Desktop/outcomes/Final_Price.txt', 'utf-8', (err, data) => {
+        console.log(`the score should be, ${data}`);
+        return res.status(201).json({"Finalscore" : data});
+    });
+})
 
 
 app.listen(5000, () =>{ 
