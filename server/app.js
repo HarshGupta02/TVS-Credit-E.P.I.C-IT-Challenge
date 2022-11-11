@@ -28,11 +28,6 @@ const generateUploadURLRight = require("./s3right");
 const generateUploadURLAccelarate = require("./s3accelarate");
 const generateUploadURLDeaccelarate = require("./s3deaccelarate");
 
-// app.get('/s3front', async (req, res) => {
-//     const urlfront = await generateUploadURLFront()
-//     res.send({urlfront});
-// })
-
 app.post('/s3front', async (req, res) => {
     const {brand, model} = req.body;
     const urlfront = await generateUploadURLFront(brand, model)
@@ -57,17 +52,17 @@ app.post('/s3right', async (req, res) => {
     res.send({urlright})
 })
 
-app.get('/s3accelarate', async (req, res) => {
-    const urlaccelarate = await generateUploadURLAccelarate()
+app.post('/s3accelarate', async (req, res) => {
+    const {brand, model} = req.body;
+    const urlaccelarate = await generateUploadURLAccelarate(brand, model)
     res.send({urlaccelarate})
 })
 
-app.get('/s3deaccelarate', async (req, res) => {
-    const urldeaccelarate = await generateUploadURLDeaccelarate()
+app.post('/s3deaccelarate', async (req, res) => {
+    const {brand, model} = req.body;
+    const urldeaccelarate = await generateUploadURLDeaccelarate(brand, model)
     res.send({urldeaccelarate})
 })
-
-// app.get('/evaluate', async (req, res) => {
 
 app.post('/evaluate', async (req, res) => {
     const {brand, model} = req.body;
@@ -89,8 +84,9 @@ app.post('/evaluate', async (req, res) => {
     res.send({"message" : "python file executed successfully"});
 })
 
-app.get('/evaluateaudio', async (req, res) => {
-    const child = spawner('python', ['C:/Users/HarshGupta/Desktop/Tvs-Credit-It-Challenge/server/audio.py']);
+app.post('/evaluateaudio', async (req, res) => {
+    const {brand, model} = req.body;
+    const child = spawner('python', ['C:/Users/HarshGupta/Desktop/Tvs-Credit-It-Challenge/server/audio.py', brand, model]);
 
     child.stdout.on('data', (data) => {
         console.log(`stdout : ${data}`);

@@ -1,3 +1,4 @@
+import sys
 import librosa, librosa.display
 import matplotlib.pyplot as plt
 import numpy as np
@@ -24,21 +25,21 @@ my_bucket = s3.Bucket(bucket)
 
 print("Downloading from S3......")
 
-my_bucket.download_file('audioaccelarate','C:/Users/HarshGupta/Desktop/Audio_user/Accelerating/accelarate.wav')
-my_bucket.download_file('audiodeaccelarate','C:/Users/HarshGupta/Desktop/Audio_user/Deaccelerating/deaccelarate.wav')
+brand = sys.argv[1]
+model = sys.argv[2]
+
+my_bucket.download_file(brand + "_" + model + "_" + "accelarate",'C:/Users/HarshGupta/Desktop/Audio_user/Accelerating/' + brand + "_" + model + '.wav')
+my_bucket.download_file(brand + "_" + model + "_" + "deaccelarate",'C:/Users/HarshGupta/Desktop/Audio_user/Deaccelerating/' + brand + "_" + model + '.wav')
 
 print("Downloaded successfully from s3....")
 
-text_file = open("C:/Users/HarshGupta/Desktop/Name.txt", "r")
-data = text_file.read() 
-text_file.close()
+data = brand + "_" + model
  
 for filen in os.listdir("C:/Users/HarshGupta/Desktop/Audio_org/Accelerating/"):
     if(data + ".wav" in filen):
-      file1 = "C:/Users/HarshGupta/Desktop/Audio_org/Accelerating/"+data+".wav"
+      file1 = "C:/Users/HarshGupta/Desktop/Audio_org/Accelerating/"+ data +".wav"
 
-# file2 = "C:/Users/HarshGupta/Desktop/Audio_user/Accelerating/" + data + ".wav"
-file2 = "C:/Users/HarshGupta/Desktop/Audio_user/Accelerating/accelarate.wav"
+file2 = "C:/Users/HarshGupta/Desktop/Audio_user/Accelerating/" + data + ".wav"
 
 signal,sr=librosa.load(file1, sr=22050)
 
@@ -252,7 +253,8 @@ for filen in os.listdir("C:/Users/HarshGupta/Desktop/Audio_org/Deaccelerating/")
     if(data + ".wav" in filen):
       file3 = "C:/Users/HarshGupta/Desktop/Audio_org/Deaccelerating/"+data+".wav"
 
-file4 = "C:/Users/HarshGupta/Desktop/Audio_user/Deaccelerating/deaccelarate.wav"
+file4 = "C:/Users/HarshGupta/Desktop/Audio_user/Deaccelerating/" + data + ".wav"
+# file4 = "C:/Users/HarshGupta/Desktop/Audio_user/Deaccelerating/deaccelarate.wav"
 
 original_deacc = AudioAnalyzer(file3, input_sr=44100, fft_size=44100)
 user_deacc = AudioAnalyzer(file4, input_sr=44100, fft_size=44100)
@@ -271,4 +273,4 @@ total_score2 = similarity2;
 final_score = (similarity+similarity2)/2;
 
 with open('C:/Users/HarshGupta/Desktop/Audio_output/Final_out.txt', 'w') as f:
-    print("Final Similarity Score : ", final_score, file=f)
+    print(final_score, file=f)

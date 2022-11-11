@@ -36,6 +36,7 @@ elif(km>=100000 and km<1000000):
   km = km/1000000
   
 image_score=float(list_of_lists[0][7]) # this is image socre
+# print("the image score is : " , image_score)
 
 # audio_sc=float(list_of_lists[8][0]) # this is one is audio... ;)
 
@@ -65,7 +66,7 @@ with open('car_ad.csv', 'a', newline='') as f_object:
     dictwriter_object.writerow(data)
     f_object.close()
 fd=pd.read_csv('car_ad.csv')
-print(final_score)
+# print(final_score)
 
 dataV={
     "Tvs":1,

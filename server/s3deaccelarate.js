@@ -15,8 +15,8 @@ const s3 = new aws.S3({
     signatureVersion: 'v4'
 })
 
-module.exports = async function generateUploadURLDeaccelarate(){
-    const imageName = "audiodeaccelarate"
+module.exports = async function generateUploadURLDeaccelarate(brand, model){
+    const imageName = brand + "_" + model + "_" + "deaccelarate";
     const params = ({
         Bucket : bucketName,
         Key : imageName,

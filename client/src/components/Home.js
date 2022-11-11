@@ -21,8 +21,6 @@ const Home = () => {
     const ImageInput1 = document.querySelector("#inpFile1")
     const file1 = ImageInput1.files[0]
 
-    // const {urlfront} = await fetch('http://localhost:5000/s3front').then(res => res.json());
-
     const {urlfront} = await fetch('http://localhost:5000/s3front', {
       method : "post",
       headers : {
@@ -156,9 +154,20 @@ const Home = () => {
     const AudioInput5 = document.querySelector("#inpFile5")
     const file5 = AudioInput5.files[0]
 
-    const {urlaccelarate} = await fetch('http://localhost:5000/s3accelarate').then(res => res.json());
+    const {urlaccelarate} = await fetch('http://localhost:5000/s3accelarate', {
+      method : "post",
+      headers : {
+        "Content-Type" : "application/json"
+      },
+      body : JSON.stringify({
+        brand : brand,
+        model : model
+      })
+    }).then(res => res.json())
 
-    console.log(urlaccelarate);
+    // const {urlaccelarate} = await fetch('http://localhost:5000/s3accelarate').then(res => res.json());
+
+    // console.log(urlaccelarate);
     
     await fetch(urlaccelarate, {
       method: "PUT",
@@ -176,7 +185,18 @@ const Home = () => {
     const AudioInput6 = document.querySelector("#inpFile6")
     const file6 = AudioInput6.files[0]
 
-    const {urldeaccelarate} = await fetch('http://localhost:5000/s3deaccelarate').then(res => res.json());
+    // const {urldeaccelarate} = await fetch('http://localhost:5000/s3deaccelarate').then(res => res.json());
+
+    const {urldeaccelarate} = await fetch('http://localhost:5000/s3deaccelarate', {
+      method : "post",
+      headers : {
+        "Content-Type" : "application/json"
+      },
+      body : JSON.stringify({
+        brand : brand,
+        model : model
+      })
+    }).then(res => res.json())
 
     console.log(urldeaccelarate);
     
@@ -193,22 +213,21 @@ const Home = () => {
 
   const audioevaluate = async (e) => {
     e.preventDefault();
-    const x = brand + "_" + model;
-    const res = await fetch("http://localhost:5000/write", {
+    const {result} = await fetch('http://localhost:5000/evaluateaudio', {
       method : "post",
       headers : {
         "Content-Type" : "application/json"
       },
       body : JSON.stringify({
-        "data" : x
+        brand : brand,
+        model : model
       })
-    })
-    const {result} = await fetch('http://localhost:5000/evaluateaudio').then(res => res.json())
+    }).then(res => res.json())
   }
 
   const audiofinalscore = async (e) => {
     e.preventDefault();
-    const res = await fetch("http://localhost:5000/writefinalscore", {
+    const res = fetch("http://localhost:5000/writefinalscore", {
       method : "post",
       headers : {
         "Content-Type" : "application/json"
@@ -225,17 +244,18 @@ const Home = () => {
     });
 
     const result = await fetch('http://localhost:5000/finalscore');
-    // const y = await result.json();
-    // const data = await fetch('http://localhost:5000/display');
-    // const target = await data.json();
-    // console.log(target['Finalscore']);
+    const y = result.json();
+    const data = await fetch('http://localhost:5000/display');
+    const target = await data.json();
+    console.log(target['Finalscore']);
 
   }
 
   return (
     <div>
       <div className = "outer-form-div-home">
-        <form>
+        <form id = "form-outer">
+
           <div>
             <input type = "text" id = "brand" onChange={(e) => setBrand(e.target.value)} 
             autoComplete = "on" placeholder='Brand'/>

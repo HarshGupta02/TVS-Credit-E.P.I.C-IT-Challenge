@@ -1,5 +1,6 @@
 const dotenv = require("dotenv");
 const aws = require("aws-sdk");
+const { model } = require("mongoose");
 
 dotenv.config();
 
@@ -15,8 +16,8 @@ const s3 = new aws.S3({
     signatureVersion: 'v4'
 })
 
-module.exports = async function generateUploadURLAccelarate(){
-    const imageName = "audioaccelarate"
+module.exports = async function generateUploadURLAccelarate(brand, model){
+    const imageName = brand + "_" + model + "_" + "accelarate";
     const params = ({
         Bucket : bucketName,
         Key : imageName,

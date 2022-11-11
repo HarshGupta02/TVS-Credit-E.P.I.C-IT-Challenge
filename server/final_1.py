@@ -54,9 +54,7 @@ def structural_sim(img1, img2):
   sim, diff = structural_similarity(img1, img2, full=True,  win_size=1, use_sample_covariance=False)
   return sim
 
-text_file = open("C:/Users/HarshGupta/Desktop/Name.txt", "r")
-data = text_file.read()
-text_file.close()
+data = brand + "_" + model
  
 """### **Front_View**"""
 
