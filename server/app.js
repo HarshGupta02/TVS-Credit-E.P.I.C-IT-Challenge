@@ -135,11 +135,9 @@ app.post('/write', (req, res) => {
 app.post('/writefinalscore', (req, res) => {
     console.log("here");
     const {brand, model, oldprice, yearsold, ownership, location, kmsdriven} = req.body;
-    let x = brand + ',' + model + ',' + oldprice + ',' + yearsold + ',' + ownership + ',' + location + ',' + kmsdriven;
-    var imagescore = fs.readFileSync('C:/Users/HarshGupta/Desktop/Images_output/out.txt', 'utf-8');
-    x = x + ',' + imagescore;
-    // var audioscore = fs.readFileSync('C:/Users/HarshGupta/Desktop/Audio_output/Final_out.txt', 'utf-8');
-    // x = x + ',' + audioscore;
+    const imagescore = fs.readFileSync('C:/Users/HarshGupta/Desktop/Images_output/out.txt', 'utf-8');
+    const x = brand + ',' + model + ',' + oldprice + ',' + yearsold + ',' + ownership + ',' + location + ',' + kmsdriven + ',' + 0.5 + ',' + imagescore;
+    console.log(x);
 
     fs.writeFile('C:/Users/HarshGupta/Desktop/outcomes/detail.txt', x, err => {
         if(err){
@@ -158,6 +156,57 @@ app.get('/display', (req, res) => {
     });
 })
 
+function sleep(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+}
+
+app.get('/getsize', async (req, res) => {
+
+    const child = spawner('python', ['C:/Users/HarshGupta/Desktop/Tvs-Credit-It-Challenge/server/Csv_length.py']);
+    
+    child.stdout.on('data', (data) => {
+        console.log(`stdout : ${data}`);
+    });
+
+    child.stderr.on('data', (data) => {
+        console.error(`stderr : ${data}`);
+    });
+
+    await sleep(10000);
+
+    child.on('close', (code) => {
+        console.log(`child process exited with code ${code}`);
+    });
+
+
+
+    fs.readFile('C:/Users/HarshGupta/Desktop/size.txt', 'utf-8', (err, data) => {
+        console.log(`the size of csv is, ${data}`);
+        return res.status(201).json({"Size" : data});
+    });
+})
+
+app.get('/mldisplay', async (req, res) => {
+    const child = spawner('python', ['C:/Users/HarshGupta/Desktop/Tvs-Credit-It-Challenge/server/Bike_Price_Predictor.py']);
+    
+    child.stdout.on('data', (data) => {
+        console.log(`stdout : ${data}`);
+    });
+
+    child.stderr.on('data', (data) => {
+        console.error(`stderr : ${data}`);
+    });
+
+    child.on('close', (code) => {
+        console.log(`child process exited with code ${code}`);
+    });
+    await sleep(30000);
+
+    fs.readFile('C:/Users/HarshGupta/Desktop/ml_predicted.txt', 'utf-8', (err, data) => {
+        console.log(`the score should be YAYYYY, ${data}`);
+        return res.status(201).json({"Finalscoreml" : data});
+    });
+})
 
 app.listen(5000, () =>{ 
     console.log(`server is running on port ${PORT}`);

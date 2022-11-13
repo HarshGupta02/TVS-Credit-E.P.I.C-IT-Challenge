@@ -13,7 +13,7 @@ old_price=int(list_of_lists[0][2]) # old_price to ptaa hi hai :)
 
 yearold=int(list_of_lists[0][3]) #yo means years old
 yearold_prev = yearold
-yearold = yearold/10
+yearold=(2022-yearold)/10
 
 ownership=int(list_of_lists[0][4]) #ow means ownership
 ownership_prev = ownership
@@ -33,22 +33,19 @@ if(km<10000):
 elif(km>=10000 and km<100000):
   km = km/100000
 elif(km>=100000 and km<1000000):
-  km = km/1000000
+  km = km/100000
   
 image_score=float(list_of_lists[0][7]) # this is image socre
-# print("the image score is : " , image_score)
-
 # audio_sc=float(list_of_lists[8][0]) # this is one is audio... ;)
 
-x1=4000 #years old
-x2=3000 #owenership
-x3=1000 #location
-x4=4000 #kmdriven
-x5=5000 #imagescore
-# x6=5000 #audioscore
+x1=15000 #years old
+x2=14000 #owenership
+x3=12000 #location
+x4=15000 #kmdriven
+x5=15000 #imagescore
+x6=15000 #audioscore
 
-# Y=(old_price-((x1*yo)+(x2*ow)+(x3*lo)+(x4*km)+(x5*image_sc)+(x6*audio_sc)))
-Y=(old_price-((x1*yearold)+(x2*ownership)+(x3*location)+(x4*km)+(x5*image_score)))
+Y=(old_price-((x1*yearold)+(x2*ownership)+(x3*location)+(x4*km)+(x5*(1-image_score)) + (x6*0.5)))
 
 final_score = Y
 
@@ -182,6 +179,6 @@ file2=file2.drop(['Model_num'], axis=1)
 file2['Location']=file2['Location_num'].map(dataoL)
 file2=file2.drop(['Location_num'], axis=1)
 
-file2 = file2[['Brand',	'Model','Location', 'Old_price'	,'Years_old','Prev_Owners',	'Kms_Driven', 'Image_Score', 'Audio_Score', 'Final_Price']]
+file2 = file2[['Brand',	'Model','Location', 'Old_price'	,'Years_old','Prev_Owners',	'Kms_Driven', 'Audio_Score', 'Image_Score', 'Final_Price']]
 dt = pd.DataFrame(file2)
 dt.to_csv("final_data.csv")
