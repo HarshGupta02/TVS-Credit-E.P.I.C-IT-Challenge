@@ -194,7 +194,6 @@ const Home = () => {
   
   const evaluate = async (e) => {
     e.preventDefault();
-    setLoading5(1);
     const {result} = await fetch('http://localhost:5000/evaluate', {
       method : "post",
       headers : {
@@ -205,7 +204,6 @@ const Home = () => {
         model : model
       })
     }).then(res => res.json())
-    setLoading5(2);
   }
 
   const uploadAccelarate = async (e) => {
@@ -307,36 +305,23 @@ const Home = () => {
         kmsdriven : kms
       })
     });
-    console.log("Step 2");
 
     const size = await fetch('http://localhost:5000/getsize');
-    console.log("Step 3");
     const sizee = await size.json();
-    console.log("Step 4");
     const x = sizee['Size'];
-    console.log("Step 5");
 
     if(x > 1000){
       console.log("greater than 1000");
-      console.log("Step 6");
       const data1 = await fetch('http://localhost:5000/mldisplay');
-      console.log("Step 7");
       const target1 = await data1.json();
-      console.log("Step 8");
       setFinalprice(target1['Finalscoreml']);
     }else{
       console.log("less than 1000");
-      console.log("Step 6");
       const result = await fetch('http://localhost:5000/finalscore');
-      console.log("Step 7");
       const y = await result.json();
-      console.log("Step 8");
       await sleep(5000);
-      console.log("Step 9");
       const data = await fetch('http://localhost:5000/display');
-      console.log("Step 10");
       const target = await data.json();
-      console.log("Step 11");
       setFinalprice(target['Finalscore']);
     }
     setLoading6(2);
@@ -506,7 +491,7 @@ const Home = () => {
               <div className="divv-up">
                 <div className="image-preview1" id = "imagePreview1">
                   <img src = "" alt = "Image Preview1" className="image-preview__image1"/>
-                  <span className="image-preview__default-text1">Drag Here</span>
+                  <span className="image-preview__default-text1">Image Preview</span>
                 </div>
                 <input
                   type="file"
@@ -527,7 +512,7 @@ const Home = () => {
               <div className="divv-down">
                 <div className="image-preview2" id = "imagePreview2">
                   <img src = "" alt = "Image Preview2" className="image-preview__image2"/>
-                  <span className="image-preview__default-text2">Drag Here</span>
+                  <span className="image-preview__default-text2">Image Preview</span>
                 </div>
                 <input
                   type="file"
@@ -550,7 +535,7 @@ const Home = () => {
               <div className="divv-left">
                 <div className="image-preview3" id = "imagePreview3">
                   <img src = "" alt = "Image Preview3" className="image-preview__image3"/>
-                  <span className="image-preview__default-text3">Drag Here</span>
+                  <span className="image-preview__default-text3">Image Preview</span>
                 </div>
                 <input
                   type="file"
@@ -571,7 +556,7 @@ const Home = () => {
               <div className="divv-right">
                 <div className="image-preview4" id = "imagePreview4">
                   <img src = "" alt = "Image Preview4" className="image-preview__image4"/>
-                  <span className="image-preview__default-text4">Drag Here</span>
+                  <span className="image-preview__default-text4">Image Preview</span>
                 </div>
                 <input
                   type="file"
@@ -595,9 +580,6 @@ const Home = () => {
               : loading5 === 1 ? <ClockLoader className="loader" size={30} color={'#FFFFFF'} loading5={loading5 === 1}/>
               : <button type = "submit" className = "btn btn-light" id = "right-image" onClick={evaluate}>Upload Success <b>&#x2713;</b> </button>
             }
-            {/* <button type="submit" className="btn btn-dark" onClick={evaluate} id="audio-button">
-              Upload Images
-            </button> */}
           </div>
 
           <br></br>
@@ -651,13 +633,9 @@ const Home = () => {
             : loading6 === 1 ? <ClockLoader className="loader-final" size={30} color={'#000000'} loading6={loading6 === 1}/>
             : <button type = "submit" className = "btn btn-dark" id = "final-score-button" onClick={audiofinalscore}>Re-Evaluate <b>&#x2713;</b> </button>
           }
-          {/* <button type="submit" className="btn btn-dark" id="final-score-button" onClick={audiofinalscore}> Calculate Final Price</button> */}
           {
             loading6 == 2 ? <div className="score"> <div className="final-score-center">The Final Price is {finalprice}</div></div> : <div></div>
           }
-          {/* <div className="score">
-            <div className="final-score-center">The Final Price is {finalprice}</div>
-          </div> */}
         </form>
       </div>
     </div>

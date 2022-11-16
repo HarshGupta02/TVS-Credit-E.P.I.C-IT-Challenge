@@ -11,7 +11,7 @@ const cors = require('cors');
 const spawner = require('child_process').spawn;
 const fs = require('fs');
 
-app.use(require("./router/auth"));
+app.use(require("./router/Auth"));
 app.use(cors());
 app.use(upload());
 app.use(express.json());
@@ -19,14 +19,14 @@ app.use(cookieParser());
 app.use(bodyParser.urlencoded({extended : true}));
 app.use(bodyParser.json());
 
-require("./db/conn");
+require("./db/Mongoose_Connection");
 dotenv.config({path : './config.env'});
-const generateUploadURLFront = require("./s3front");
-const generateUploadURLBack = require("./s3back");
-const generateUploadURLLeft = require("./s3left");
-const generateUploadURLRight = require("./s3right");
-const generateUploadURLAccelarate = require("./s3accelarate");
-const generateUploadURLDeaccelarate = require("./s3deaccelarate");
+const generateUploadURLFront = require("./S3_Front_View");
+const generateUploadURLBack = require("./S3_Back_View");
+const generateUploadURLLeft = require("./S3_Left_View");
+const generateUploadURLRight = require("./S3_Right_View");
+const generateUploadURLAccelarate = require("./S3_Accelarate.js");
+const generateUploadURLDeaccelarate = require("./S3_Deaccelarate.js");
 
 app.post('/s3front', async (req, res) => {
     const {brand, model} = req.body;
@@ -66,8 +66,7 @@ app.post('/s3deaccelarate', async (req, res) => {
 
 app.post('/evaluate', async (req, res) => {
     const {brand, model} = req.body;
-    // const child = spawner('python', ['C:/Users/HarshGupta/Desktop/Tvs-Credit-It-Challenge/server/final.py', brand, model]);
-    const child = spawner('python', ['C:/Users/HarshGupta/Desktop/Tvs-Credit-It-Challenge/server/final_1.py', brand, model]);
+    const child = spawner('python', ['C:/Users/HarshGupta/Desktop/Tvs-Credit-It-Challenge/server/Image_Download_Compare.py', brand, model]);
 
     child.stdout.on('data', (data) => {
         console.log(`stdout : ${data}`);
@@ -86,7 +85,7 @@ app.post('/evaluate', async (req, res) => {
 
 app.post('/evaluateaudio', async (req, res) => {
     const {brand, model} = req.body;
-    const child = spawner('python', ['C:/Users/HarshGupta/Desktop/Tvs-Credit-It-Challenge/server/audio.py', brand, model]);
+    const child = spawner('python', ['C:/Users/HarshGupta/Desktop/Tvs-Credit-It-Challenge/server/Audio_Download_Compare.py', brand, model]);
 
     child.stdout.on('data', (data) => {
         console.log(`stdout : ${data}`);
@@ -105,7 +104,7 @@ app.post('/evaluateaudio', async (req, res) => {
 
 app.get('/finalscore', (req, res) => {
 
-    const child = spawner('python', ['C:/Users/HarshGupta/Desktop/Tvs-Credit-It-Challenge/server/final_score.py']);
+    const child = spawner('python', ['C:/Users/HarshGupta/Desktop/Tvs-Credit-It-Challenge/server/Non_ML_Score.py']);
     
     child.stdout.on('data', (data) => {
         console.log(`stdout : ${data}`);
@@ -133,11 +132,9 @@ app.post('/write', (req, res) => {
 })
 
 app.post('/writefinalscore', (req, res) => {
-    console.log("here");
     const {brand, model, oldprice, yearsold, ownership, location, kmsdriven} = req.body;
     const imagescore = fs.readFileSync('C:/Users/HarshGupta/Desktop/Images_output/out.txt', 'utf-8');
     const x = brand + ',' + model + ',' + oldprice + ',' + yearsold + ',' + ownership + ',' + location + ',' + kmsdriven + ',' + 0.5 + ',' + imagescore;
-    console.log(x);
 
     fs.writeFile('C:/Users/HarshGupta/Desktop/outcomes/detail.txt', x, err => {
         if(err){
@@ -151,7 +148,6 @@ app.post('/writefinalscore', (req, res) => {
 
 app.get('/display', (req, res) => {
     fs.readFile('C:/Users/HarshGupta/Desktop/outcomes/Final_Price.txt', 'utf-8', (err, data) => {
-        console.log(`the score should be, ${data}`);
         return res.status(201).json({"Finalscore" : data});
     });
 })
@@ -162,7 +158,7 @@ function sleep(ms) {
 
 app.get('/getsize', async (req, res) => {
 
-    const child = spawner('python', ['C:/Users/HarshGupta/Desktop/Tvs-Credit-It-Challenge/server/Csv_length.py']);
+    const child = spawner('python', ['C:/Users/HarshGupta/Desktop/Tvs-Credit-It-Challenge/server/Csv_Size.py']);
     
     child.stdout.on('data', (data) => {
         console.log(`stdout : ${data}`);
@@ -172,13 +168,11 @@ app.get('/getsize', async (req, res) => {
         console.error(`stderr : ${data}`);
     });
 
-    await sleep(10000);
+    await sleep(20000);
 
     child.on('close', (code) => {
         console.log(`child process exited with code ${code}`);
     });
-
-
 
     fs.readFile('C:/Users/HarshGupta/Desktop/size.txt', 'utf-8', (err, data) => {
         console.log(`the size of csv is, ${data}`);
@@ -187,7 +181,7 @@ app.get('/getsize', async (req, res) => {
 })
 
 app.get('/mldisplay', async (req, res) => {
-    const child = spawner('python', ['C:/Users/HarshGupta/Desktop/Tvs-Credit-It-Challenge/server/Bike_Price_Predictor.py']);
+    const child = spawner('python', ['C:/Users/HarshGupta/Desktop/Tvs-Credit-It-Challenge/server/ML_Score.py']);
     
     child.stdout.on('data', (data) => {
         console.log(`stdout : ${data}`);
@@ -200,10 +194,9 @@ app.get('/mldisplay', async (req, res) => {
     child.on('close', (code) => {
         console.log(`child process exited with code ${code}`);
     });
-    await sleep(30000);
+    await sleep(15000);
 
     fs.readFile('C:/Users/HarshGupta/Desktop/ml_predicted.txt', 'utf-8', (err, data) => {
-        console.log(`the score should be YAYYYY, ${data}`);
         return res.status(201).json({"Finalscoreml" : data});
     });
 })

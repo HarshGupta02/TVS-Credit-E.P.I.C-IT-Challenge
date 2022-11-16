@@ -12,7 +12,7 @@ const Login = () => {
   const loginUser = async (e) => {
     e.preventDefault();
 
-    const res = await fetch("/login", {
+    const res = await fetch("http://localhost:5000/login", {
       method : "post",
       headers : {
         "Content-Type" : "application/json"
@@ -25,10 +25,8 @@ const Login = () => {
     const data = res.json();
     if(res.status === 422 || !data){
       window.alert("Invalid Credentials");
-      console.log("Invalid Credentials");
     }else{
       window.alert("Login successful");
-      console.log("Login successful");
       history.push("/");
     }
 

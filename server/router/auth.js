@@ -1,13 +1,14 @@
-require("../db/conn");
+require("../db/Mongoose_Connection");
 const express = require("express");
 const router = express.Router();
-const User = require("../model/userSchema");
+const User = require("../model/UserSchema");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
-const authenticate = require("../middleware/authenticate");
+const authenticate = require("../middleware/Authenticate");
 const { application } = require("express");
 
 router.post("/register", async (req, res) => {
+    console.log()
     const {name, username, phoneno, email, password} = req.body;
     if(!name || !username || !email || !password || !phoneno){
         return res.status(422).json({error : "Please Fill the fields properly"});
@@ -58,19 +59,6 @@ router.post("/login", async (req, res) => {
     }catch(err){
         console.log(err);
     }
-})
-
-router.get("/about", authenticate, (req, res) => {
-    res.send("i am here");
-})
-
-router.get("/PrevPrediction", (req,res) => {
-    res.send("This is the previous prediction page");
-})
-
-router.get("/ContactUs", (req,res) => {
-    res.cookie("Test", 'harsh');
-    res.send("This is the contact us page");
 })
 
 router.get("/logout", (req, res) => { 
